@@ -1,0 +1,38 @@
+@import "../../../styles/flexbox";
+@import "../../../styles/mat-theme";
+
+.home {
+  height: 80vh;
+
+  h1 {
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    line-height: 1.8em;
+
+    .welcome {
+      font-size: 16px;
+    }
+
+    .app-title {
+      padding: 10px 0;
+      font-size: 40px;
+
+      .title-bg {
+        padding: 0 10px;
+        border-radius: 10px;
+      }
+    }
+
+    @include lg {
+      .welcome {
+        font-size: 20px;
+      }
+
+      .app-title {
+        font-size: 60px;
+      }
+    }
+  }
+}
+
+@include color($clinic-app-theme);

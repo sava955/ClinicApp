@@ -1,0 +1,221 @@
+<div class="add-details column row-gap-20">
+    <div>
+        <mat-card>
+            <div class="row space-between center">
+                <h2 class="text">{{patientId ? idTitle : 'New Patient'}}</h2>
+                <p *ngIf="patient">{{patient.registeredDate | date:'mediumDate'}}</p>
+            </div>
+        </mat-card>
+    </div>
+
+    <div>
+        <form [formGroup]="patientForm" (ngSubmit)="addPatient()" class="column row-gap-20 {{mode.toLowerCase()}}">
+            <div class="row-lg space-between-lg normal-lg col-gap-lg-20">
+                <mat-card class="column col-lg-4 col-gap-20 new-patient-card">
+                    <div class="row">
+                        <div class="full">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>First name</mat-label>
+                                <input type="text" matInput formControlName="firstName">
+                                <mat-error *ngIf="firstName?.hasError('required')">
+                                    First name is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="full">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>Last name</mat-label>
+                                <input type="text" matInput formControlName="lastName">
+                                <mat-error *ngIf="lastName?.hasError('required')">
+                                    Last name is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row-lg space-between-lg center-lg">
+                        <div class="col-lg-6">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>Birth Date</mat-label>
+                                <input matInput formControlName="birthDate" [matDatepicker]="picker"
+                                    (dateChange)="isOlder($event)" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error *ngIf="birthDate?.hasError('required')">
+                                    Birth date is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>VAT Code</mat-label>
+                                <input type="text" matInput formControlName="vatcode" [errorStateMatcher]="matcher">
+                                <mat-error *ngIf="vatcode?.hasError('required')">
+                                    Vat code is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="full">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input type="email" matInput formControlName="email"
+                                    placeholder="Ex. patient@example.com">
+                                <mat-error *ngIf="email?.hasError('email') && !email?.hasError('required')">
+                                    Please enter a valid email address
+                                </mat-error>
+                                <mat-error *ngIf="email?.hasError('required')">
+                                    Email is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="full">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>Doctor</mat-label>
+                                <input type="text" matInput formControlName="doctor" [matAutocomplete]="auto">
+                                <mat-autocomplete (optionSelected)="selectedDoctor($event)" #auto="matAutocomplete">
+                                    <mat-option *ngFor="let doctor of filteredOptions | async" [value]="doctor">
+                                        {{doctor.title}} {{doctor.firstName}} {{doctor.lastName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="doctor?.hasError('required')">
+                                    Doctor is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card>
+
+                <mat-card class="column col-lg-8 new-patient-card address-card">
+                    <ng-container formArrayName="addresses">
+                        <mat-stepper orientation="horizontal" labelPosition="bottom" #stepper>
+                            <div *ngFor="let item of addresses.controls; index as i">
+                                <mat-step formGroupName="{{i}}" [stepControl]="item"
+                                    errorMessage="{{addresses.value.length < 6 ? 'Data required.' : ''}}">
+                                    <ng-template matStepLabel>
+                                        <span *ngIf="addresses.value.length < 6"> Address</span>
+                                    </ng-template>
+                                    <div *ngIf="mode === add && i != 0" class="delete-btn row">
+                                        <button (click)="removeAddress(i)" type="button ml-auto" mat-mini-fab
+                                            class="ml-auto" color="primary">
+                                            <mat-icon>
+                                                delete
+                                            </mat-icon>
+                                        </button>
+                                    </div>
+                                    <ng-container *ngIf="i !== 0">
+                                        <div class="row-lg">
+                                            <div class="full">
+                                                <mat-form-field class="form-field" appearance="outline">
+                                                    <mat-label>Type</mat-label>
+                                                    <mat-select formControlName="type"
+                                                        (selectionChange)="checkType(i)">
+                                                        <mat-option *ngFor="let type of types" [value]="type">
+                                                            {{type}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="showName(i)" class="row-lg">
+                                            <div class="full">
+                                                <mat-form-field class="form-field" appearance="outline">
+                                                    <mat-label>Name</mat-label>
+                                                    <input matInput formControlName="name">
+                                                    <mat-error *ngIf="name?.hasError('required')">
+                                                        Name is <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div class="row-lg">
+                                        <div class="full">
+                                            <mat-form-field class="form-field" appearance="outline">
+                                                <mat-label>Phone number</mat-label>
+                                                <input matInput formControlName="phone"
+                                                    (blur)="formatPhone($event)" [errorStateMatcher]="matcher" required>
+                                                <mat-error *ngIf="phone?.hasError('required')">
+                                                    Phone number is <strong>required</strong>
+                                                </mat-error>
+                                                <mat-error *ngIf="phone?.hasError('pattern')">
+                                                    Invalid format. Only <strong>numbers</strong> allowed
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row-lg space-between-lg center-lg">
+                                        <div class="col-lg-6">
+                                            <mat-form-field class="form-field" appearance="outline">
+                                                <mat-label>Street</mat-label>
+                                                <input matInput formControlName="street" required>
+                                                <mat-error *ngIf="street?.hasError('required')">
+                                                    Street is <strong>required</strong>
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <mat-form-field class="form-field" appearance="outline">
+                                                <mat-label>City</mat-label>
+                                                <input matInput formControlName="city" required>
+                                                <mat-error *ngIf="city?.hasError('required')">
+                                                    City is <strong>required</strong>
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-lg space-between-lg center-lg">
+                                        <div class="col-lg-6">
+                                            <mat-form-field class="form-field" appearance="outline">
+                                                <mat-label>ZIP code</mat-label>
+                                                <input matInput formControlName="zipCode" required>
+                                                <mat-error *ngIf="zipCode?.hasError('required')">
+                                                    ZIP code is <strong>required</strong>
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <mat-form-field class="form-field" appearance="outline">
+                                                <mat-label>Country</mat-label>
+                                                <input matInput formControlName="country" required>
+                                                <mat-error *ngIf="country?.hasError('required')">
+                                                    Country is <strong>required</strong>
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </mat-step>
+                            </div>
+                        </mat-stepper>
+                    </ng-container>
+
+                    <div *ngIf="mode === add" class="row">
+                        <button type="button" (click)="addAddressesForms()" class="ml-auto" mat-raised-button
+                            color="primary">Add
+                            step</button>
+                    </div>
+                </mat-card>
+            </div>
+
+            <div *ngIf="mode === add">
+                <mat-card>
+                    <div class="row">
+                        <button type="submit" class="ml-auto" mat-raised-button color="primary">Save</button>
+                    </div>
+                </mat-card>
+            </div>
+        </form>
+    </div>
+</div>

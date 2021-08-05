@@ -1,0 +1,112 @@
+@import "./responsivity-mixins";
+
+// Flex
+
+.row,
+.row-lg,
+.column {
+  display: flex;
+}
+
+.row-lg {
+  flex-direction: column;
+
+  @include lg {
+    flex-direction: row;
+  }
+}
+
+.column {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.space-between-lg {
+  @include lg {
+    justify-content: space-between;
+  }
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.normal {
+  align-items: normal;
+}
+
+.normal-lg {
+  @include lg {
+    align-items: normal;
+  }
+}
+
+.center {
+  align-items: center;
+}
+
+.center-lg {
+  @include lg {
+    align-items: center;
+  }
+}
+
+// Gap
+
+.row-gap-20 {
+  row-gap: 20px !important;
+}
+
+.col-gap-20 {
+  column-gap: 20px !important;
+}
+
+.col-gap-lg-20 {
+  row-gap: 20px !important;
+
+  @include lg {
+    column-gap: 20px !important;
+  }
+}
+
+// Cols
+.full {
+  width: 100%;
+}
+
+.col-lg-4,
+.col-lg-6,
+.col-lg-8 {
+  width: auto;
+}
+
+.col-lg-4 {
+  width: auto;
+
+  @include lg {
+    width: 38%;
+  }
+}
+
+.col-lg-6 {
+  width: auto;
+
+  @include lg {
+    width: 48%;
+  }
+}
+
+.col-lg-8 {
+  width: auto;
+
+  @include lg {
+    width: 58%;
+  }
+}

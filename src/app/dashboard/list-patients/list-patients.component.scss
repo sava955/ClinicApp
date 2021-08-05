@@ -1,0 +1,25 @@
+@import "../../../styles/flexbox";
+
+::ng-deep {
+  .mat-progress-spinner {
+    margin: auto;
+  }
+}
+
+table {
+  width: 100%;
+
+  th, td {
+    &.md-hide {
+      display: none;
+
+      @include lg {
+        display: table-cell;
+      }
+    }
+  }
+
+  td {
+    font-size: 14px;
+  }
+}

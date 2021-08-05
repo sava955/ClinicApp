@@ -1,0 +1,57 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
+
+@include mat.core();
+
+$clinic-app-primary: mat.define-palette(mat.$blue-palette, A100);
+$clinic-app-accent: mat.define-palette(mat.$grey-palette, 900);
+$clinic-app-warn: mat.define-palette(mat.$red-palette);
+
+$clinic-app-theme: mat.define-light-theme((
+  color: (
+    primary: $clinic-app-primary,
+    accent: $clinic-app-accent,
+    warn: $clinic-app-warn,
+  )
+));
+
+
+@mixin color($clinic-app-theme) {
+  $color-config: mat.get-color-config($clinic-app-theme);
+
+  $primary-palette: map.get($color-config, 'primary');
+  $accent-palette: map.get($color-config, 'accent');
+
+  .border-home {
+    border: 1px solid mat.get-color-from-palette($accent-palette, 500) !important;
+    border-radius: 10px;
+  }
+
+  .text-primary {
+    color: mat.get-color-from-palette($primary-palette, A200) !important;
+  }
+
+  .sidenav {
+    background-color: mat.get-color-from-palette($accent-palette, 900);
+  }
+
+  ::ng-deep {
+    .mat-horizontal-stepper-header-container {
+      &::-webkit-scrollbar-track {
+        background-color: mat.get-color-from-palette($accent-palette, 100) !important;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: mat.get-color-from-palette($accent-palette, 300) !important;
+      }
+    }
+
+    .mat-form-field-disabled {
+      input, .mat-select-value  {
+        color: mat.get-color-from-palette($accent-palette, 900) !important;
+      }
+    }
+  }
+}
+
+@include mat.all-component-themes($clinic-app-theme);

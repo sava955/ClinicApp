@@ -1,0 +1,32 @@
+@import '../../../styles/variables';
+@import "../../../styles/mat-theme";
+
+mat-sidenav-container {
+   top: 64px;
+   
+  .sidenav {
+    width: 200px;
+  }
+
+  .dashboard {
+    min-height: calc(100vh - 64px);
+    
+    .dashboard-content {
+      padding: 2em 6em;
+
+      @media (max-width: 1350px) {
+        padding: 2em 20px;
+      }
+  
+      @media (max-width: 1250px) {
+        padding: 2em 10px;
+      }
+  
+      @media (max-width: 768px) {
+        padding: 2em 10px;
+      }
+    }
+  }
+}
+
+@include color($clinic-app-theme);

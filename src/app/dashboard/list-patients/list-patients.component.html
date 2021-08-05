@@ -1,0 +1,65 @@
+<div *ngIf="loading" class="row full">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div *ngIf="!loading" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastName}} {{element.firstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="registeredDate">
+      <th mat-header-cell *matHeaderCellDef> Registered Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.registeredDate | date:'mediumDate'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctor">
+      <th mat-header-cell *matHeaderCellDef class="md-hide"> Doctor </th>
+      <td mat-cell *matCellDef="let element" class="md-hide"> 
+        {{getDoctor(element.doctor).title}} 
+        {{getDoctor(element.doctor).firstName}} 
+        {{getDoctor(element.doctor).lastName}} 
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contact">
+      <th mat-header-cell *matHeaderCellDef class="md-hide"> Contact </th>
+      <td mat-cell *matCellDef="let element" class="md-hide">
+        <div>
+          {{element.addresses[0].phone}}<br />
+          {{element.email}}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef class="md-hide"> Address </th>
+      <td mat-cell *matCellDef="let element" class="md-hide">
+        <div>
+          {{element.addresses[0].street}},         
+        </div>
+        <div>
+          {{element.addresses[0].zipcode}},
+          {{element.addresses[0].city}},
+          {{element.addresses[0].country}}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="row">
+          <button (click)="goToPatient(element.id)" mat-raised-button class="ml-auto" color="primary">Preview</button>
+        </div>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>

@@ -1,0 +1,19 @@
+<mat-nav-list class="nav-list">
+    <div *ngFor="let link of links" class="links">
+        <a mat-list-item [routerLink]="link.path" routerLinkActive="text-primary">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <span *ngIf="link.path === navIcons.HOME" class="material-icons">
+                    home
+                </span>
+                <span *ngIf="link.path === navIcons.NEW_PATIENT" class="material-icons">
+                    person_add
+                </span>
+                <span *ngIf="link.path === navIcons.LIST_PATIENTS" class="material-icons">
+                    list_alt
+                </span>
+            </div>
+
+            <span class="label">{{link.label}}</span>
+        </a>
+    </div>
+</mat-nav-list>
