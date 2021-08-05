@@ -7,8 +7,8 @@ import { NewPatientComponent } from './new-patient/new-patient.component';
 
 const routes: Routes = [
   {
-    path: '/',
-    redirectTo: '',
+    path: '',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
