@@ -1,0 +1,27 @@
+@import "./variables";
+
+@mixin xs {
+  @media (min-width: $grid-xs) {
+    @content;
+  }
+}
+@mixin sm {
+  @media (min-width: $grid-sm) {
+    @content;
+  }
+}
+@mixin md {
+  @media (min-width: $grid-md) {
+    @content;
+  }
+}
+@mixin lg {
+  @media (min-width: $grid-lg) {
+    @content;
+  }
+}
+@mixin xl {
+  @media (min-width: $grid-xl) {
+    @content;
+  }
+}

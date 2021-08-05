@@ -1,0 +1,41 @@
+@import "../../../styles/flexbox";
+@import "../../../styles/mat-theme";
+
+.add-details {
+  margin-top: 3em;
+
+  .new-patient-card {
+
+    &.address-card {
+      box-sizing: border-box;
+    }
+  
+    .form-field {
+      width: 100%;
+    }
+  
+    ::ng-deep {
+      .mat-horizontal-stepper-header-container {
+        overflow-x: scroll;
+        margin-bottom: 20px;
+  
+        &::-webkit-scrollbar {
+          height: 5px;
+        }
+  
+        &::-webkit-scrollbar {
+          height: 5px;
+        }
+      }
+    }
+  
+    mat-stepper {
+      .delete-btn {
+        margin-bottom: 20px;
+        height: 40px;
+      }
+    }
+  }
+}
+
+@include color($clinic-app-theme);
